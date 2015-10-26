@@ -8,4 +8,10 @@ public class QArrayList<T> extends QListWrapper<T> {
 		super(new ArrayList<>());
 	}
 
+	@SafeVarargs
+	public QArrayList(T... values){
+		this();
+		for(T v : values)add(v);
+	}
+	
 }
