@@ -33,6 +33,16 @@ public class CodingHelper {
 		return getRandomString(length);
 	}
 	
+	public static String indent(String value){
+		String[] lines = value.split(Expression.LINE_SEPERATOR);
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<lines.length; i++){
+			if(i > 0) sb.append(Expression.LINE_SEPERATOR);
+			sb.append(String.format("\t%s", lines[i]));
+		}
+		return sb.toString();
+	}
+	
 	public static String getRandomMethodName(CtClass type){
 		String mN;
 		List<String> forbiddenNames = new ArrayList<String>();

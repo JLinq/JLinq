@@ -2,25 +2,19 @@ package de.iss.jlinq.lambda;
 
 import java.lang.reflect.Method;
 
-class CallExpressionImpl implements CallExpression, CompilationElement {
+class CallExpressionImpl extends CompiledElement implements CallExpression {
 
 	private Expression target;
 	private Method method;
-	private Expressions parameters;
+	private Expressions<Expression> parameters;
 
-	public CallExpressionImpl(Expression target, Method method, Expressions params) {
+	public CallExpressionImpl(Expression target, Method method, Expressions<Expression> params) {
 		this.target = target;
 		this.method = method;
 		this.parameters = params;
 	}
 
-	@Override
-	public void initCompilation(CompilationContext context) {
-		if (target instanceof CompilationElement)
-			((CompilationElement) target).initCompilation(context);
-		if (parameters instanceof CompilationElement)
-			((CompilationElement) parameters).initCompilation(context);
-	}
+	
 
 	@Override
 	public String toString() {
@@ -42,6 +36,16 @@ class CallExpressionImpl implements CallExpression, CompilationElement {
 	public String getReference() {
 		throw new RuntimeException("Not supported!");
 
+	}
+
+
+
+	@Override
+	protected void doInit(CompilationContext context) {
+		if (target instanceof CompilationElement)
+			((CompilationElement) target).initCompilation(context);
+		if (parameters instanceof CompilationElement)
+			((CompilationElement) parameters).initCompilation(context);
 	}
 
 }
