@@ -37,7 +37,7 @@ public class LambdaExpressionImpl extends CompiledElement implements LambdaExpre
 				bodyString = bodyString.substring(0, bodyString.length() - 1);
 			sb.append(bodyString);
 		} else {
-			sb.append(String.format(") -> {%s", Expression.LINE_SEPERATOR));
+			sb.append(String.format("{%s", Expression.LINE_SEPERATOR));
 			sb.append(CodingHelper.indent(body.getCodeBlock()));
 			sb.append(String.format("%s}", Expression.LINE_SEPERATOR));
 		}

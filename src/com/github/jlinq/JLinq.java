@@ -1,14 +1,17 @@
 package com.github.jlinq;
 
-public interface JLinq {
+public class  JLinq {
 
+	protected JLinq(){
+		
+	}
 	
-	static <T> Queryable<T> create(Iterable<T> iterable){
+	public static <T> Queryable<T> create(Iterable<T> iterable){
 		return new LazyQueryable<>(iterable);
 	}
 	
 	@SuppressWarnings("unchecked")
-	static <T> Queryable<T> create(T... elements){
+	public static <T> Queryable<T> create(T... elements){
 		return new LazyQueryable<>(elements);
 	}
 	
