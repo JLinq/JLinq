@@ -5,8 +5,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.iss.jlinq.lambda.CallExpression;
 import de.iss.jlinq.lambda.Expression;
 import de.iss.jlinq.lambda.Expressions;
+import de.iss.jlinq.lambda.LambdaExpression;
+import de.iss.jlinq.lambda.ParameterExpression;
 
 public class ExpressionsTestCase {
 
@@ -16,9 +19,11 @@ public class ExpressionsTestCase {
 
 	@Test
 	public void test() throws NoSuchMethodException, SecurityException {
-		Expression e = Expression.parameter(String.class);
+		ParameterExpression e = Expression.parameter(String.class);
 		System.out.println(e);
-		System.out.println(Expression.call(e, String.class.getMethod("length"), Expression.expressions()));
+		CallExpression ce = Expression.call(e, String.class.getMethod("length"));
+		LambdaExpression le = Expression.lambda(Expression.expressions(e), Expression.expressions(ce));
+		System.out.println(le);
 	}
 
 }
