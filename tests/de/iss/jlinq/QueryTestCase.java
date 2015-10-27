@@ -4,6 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.github.jlinq.QArrayList;
+import com.github.jlinq.QList;
+import com.github.jlinq.Queryable;
+
 public class QueryTestCase {
 
 	@Test

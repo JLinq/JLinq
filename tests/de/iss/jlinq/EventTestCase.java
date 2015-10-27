@@ -5,10 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.iss.jlinq.events.Delegate;
-import de.iss.jlinq.events.Event;
-import de.iss.jlinq.events.EventArgs;
-import de.iss.jlinq.events.EventDelegate;
+import com.github.jlinq.events.Delegate;
+import com.github.jlinq.events.Event;
+import com.github.jlinq.events.EventArgs;
+import com.github.jlinq.events.EventDelegate;
 
 public class EventTestCase {
 

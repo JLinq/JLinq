@@ -5,11 +5,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.iss.jlinq.lambda.CallExpression;
-import de.iss.jlinq.lambda.Expression;
-import de.iss.jlinq.lambda.Expressions;
-import de.iss.jlinq.lambda.LambdaExpression;
-import de.iss.jlinq.lambda.ParameterExpression;
+import com.github.jlinq.lambda.CallExpression;
+import com.github.jlinq.lambda.Expression;
+import com.github.jlinq.lambda.Expressions;
+import com.github.jlinq.lambda.LambdaExpression;
+import com.github.jlinq.lambda.ParameterExpression;
 
 public class ExpressionsTestCase {
 
