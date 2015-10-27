@@ -56,11 +56,15 @@ public class ExpressionsImpl<T extends Expression> extends CompiledElement imple
 	}
 
 	@Override
-	public String toParameterList() {
+	public String toParameterList(boolean withTypes) {
 		StringBuilder sb = new StringBuilder();
+		T current;
 		for(int i=0; i<expressions.size(); i++){
 			if(i > 0) sb.append(", ");
-			sb.append(expressions.get(i));
+			current = expressions.get(i);
+			if(withTypes && (current instanceof CompilationElement)){
+				sb.append(((CompilationElement) current).getDeclaration());
+			}else sb.append(current);
 		}
 		return sb.toString();
 	}
