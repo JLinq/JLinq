@@ -1,4 +1,4 @@
-package de.iss.jlinq;
+package com.github.jlinq;
 
 import static org.junit.Assert.*;
 

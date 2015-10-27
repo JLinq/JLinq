@@ -35,6 +35,19 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<excludes>
@@ -50,6 +63,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>javassist</groupId>
@@ -63,4 +83,10 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<scm>
+		<url>https://github.com/JLinq/JLinq.git</url>
+		<developerConnection>JLinq-Team</developerConnection>
+	</scm>
+	<description>A LINQ-like implementation that can be used to simplify the work with data classes.</description>
+	<url>https://github.com/JLinq/JLinq</url>
 </project>
