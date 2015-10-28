@@ -34,8 +34,7 @@ class CallExpressionImpl extends CompiledElement implements CallExpression {
 
 	@Override
 	public String getReference() {
-		throw new RuntimeException("Not supported!");
-
+		return toString();
 	}
 
 

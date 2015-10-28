@@ -8,7 +8,9 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.jlinq.lambda.AssigmentExpression;
 import com.github.jlinq.lambda.CallExpression;
+import com.github.jlinq.lambda.DeclarationExpression;
 import com.github.jlinq.lambda.LambdaExpression;
 import com.github.jlinq.lambda.ParameterExpression;
 import com.github.jlinq.lambda.QExpression;
@@ -28,7 +30,9 @@ public class ExpressionsTestCase {
 		CallExpression ce = QExpression.call(e, String.class.getMethod("length"));
 		CallExpression syso = QExpression.call(QExpression.constantReference("System.out"), PrintStream.class.getMethod("println", String.class), QExpression.expressions(ce));
 		CallExpression syso2 = QExpression.call(QExpression.constantReference("System.out"), PrintStream.class.getMethod("println", String.class), QExpression.expressions(e));
-		LambdaExpression le = QExpression.lambda(String.class, QExpression.parameterExpressions(e), QExpression.expressions(syso).append(syso2).append(QExpression.returnExpression(e)));
+		DeclarationExpression declaration = QExpression.declaration(Integer.TYPE, "someInt");
+		AssigmentExpression assigment = QExpression.assign(declaration, QExpression.constant(4));
+		LambdaExpression le = QExpression.lambda(String.class, QExpression.parameterExpressions(e), QExpression.expressions(syso).append(syso2).append(assigment).append(QExpression.returnExpression(e)));
 		System.out.println(le);
 		ClassPool cp = new ClassPool(true);
 		CtClass c = cp.makeClass("TestClass");

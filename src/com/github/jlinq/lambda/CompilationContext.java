@@ -20,5 +20,9 @@ class CompilationContext {
 	public void registerParmeter(CompilationParameterExpression p){
 		localVariables.add(p.getName());
 	}
+	
+	public void registerLocatVariable(String varName){
+		localVariables.add(varName);
+	}
 
 }

@@ -49,5 +49,17 @@ public  class QExpression {
 	public static ReturnExpression returnExpression(){
 		return returnExpression(null);
 	}
+	
+	public static DeclarationExpression declaration(Class<?> type, String name){
+		return new DeclarationExpressionImpl(type, name);
+	}
+	
+	public static DeclarationExpression declaration(Class<?> type){
+		return new DeclarationExpressionImpl(type);
+	}
+	
+	public static AssigmentExpression assign(Expression target, Expression source){
+		return new AssigmentExpressionImpl(target, source);
+	}
 
 }
