@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
+
 class LazyQueryable<T> implements Queryable<T> {
 
 	private final Iterable<T> base;

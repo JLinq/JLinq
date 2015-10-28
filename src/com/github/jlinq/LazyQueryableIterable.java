@@ -2,6 +2,7 @@ package com.github.jlinq;
 
 import java.util.Iterator;
 
+
 public class LazyQueryableIterable<T> implements Iterable<T>{
 
 	private final Creator<Iterator<T>> iteratorCreator;
