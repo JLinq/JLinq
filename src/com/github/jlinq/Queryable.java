@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 
-public interface Queryable<T> extends Iterable<T>, JLinq {
+public interface Queryable<T> extends Iterable<T> {
 
 	<R> Queryable<R> select(Function<? super T, R> func);
 	Queryable<T> where(Function<? super T, Boolean> func);

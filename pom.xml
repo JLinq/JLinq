@@ -85,8 +85,13 @@
 	</dependencies>
 	<scm>
 		<url>https://github.com/JLinq/JLinq.git</url>
-		<developerConnection>JLinq-Team</developerConnection>
 	</scm>
+	<developers>
+		<developer>
+			<id>jlinq</id>
+			<name>JLinq-Team</name>
+		</developer>
+	</developers>
 	<description>A LINQ-like implementation that can be used to simplify the work with data classes.</description>
 	<url>https://github.com/JLinq/JLinq</url>
 </project>

@@ -17,6 +17,9 @@ public class ConstantObjectExpression implements ConstantExpression {
 				if(type == String.class){
 					code = String.format("\"%s\"", object);
 					return;
+				}else{
+					code = String.format("%s", object);
+					return;
 				}
 			}
 		}
@@ -24,7 +27,7 @@ public class ConstantObjectExpression implements ConstantExpression {
 	}
 
 	private boolean isConstantType(Class<?> cl){
-		return (cl.isPrimitive() || cl == String.class);
+		return (cl.isPrimitive() || cl == String.class || cl ==Integer.class || cl == Float.class || cl == Double.class || cl == Long.class || cl == Character.class || cl == Byte.class);
 	}
 	
 	@Override

@@ -18,7 +18,7 @@ class CallExpressionImpl extends CompiledElement implements CallExpression {
 
 	@Override
 	public String toString() {
-		initCompilation(new CompilationContext());
+		if(!isInitialized()) initCompilation(new CompilationContext());
 		String targetString;
 		if (target != null) {
 			if (target instanceof CompilationElement)
@@ -34,8 +34,7 @@ class CallExpressionImpl extends CompiledElement implements CallExpression {
 
 	@Override
 	public String getReference() {
-		throw new RuntimeException("Not supported!");
-
+		return toString();
 	}
 
 

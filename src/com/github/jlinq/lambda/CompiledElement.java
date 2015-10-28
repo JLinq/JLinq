@@ -13,4 +13,6 @@ abstract class CompiledElement implements CompilationElement{
 	
 	protected abstract void doInit(CompilationContext context);
 	
+	protected boolean isInitialized(){ return lastContext != null; }
+	
 }
