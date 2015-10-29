@@ -4,10 +4,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Wraps a given list.
+ * @author Marcel Singer
+ *
+ * @param <T> The type of the elements in this list.
+ */
 public class QListWrapper<T> extends LazyQueryable<T> implements QList<T> {
 
 	private final List<T> base;
 	
+	/**
+	 * Creates a new instance of {@link QListWrapper}.
+	 * @param base The list to wrap.
+	 */
 	public QListWrapper(List<T> base) {
 		super(base);
 		this.base = base;
