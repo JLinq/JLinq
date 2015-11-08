@@ -1,14 +1,14 @@
 package com.github.jlinq;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Consumer;
-
 
 class LazyQueryable<T> implements Queryable<T> {
 
@@ -67,8 +67,8 @@ class LazyQueryable<T> implements Queryable<T> {
 	}
 
 	@Override
-	public List<T> toList() {
-		List<T> result = new ArrayList<>();
+	public QList<T> toList() {
+		QList<T> result = new QArrayList<>();
 		Iterator<T> iter = iterator();
 		while (iter.hasNext()) {
 			result.add(iter.next());
@@ -138,27 +138,30 @@ class LazyQueryable<T> implements Queryable<T> {
 	public T find(Function<? super T, Boolean> func) {
 		return where(func).first();
 	}
-	
+
 	@Override
-	public boolean contains(T value){
+	public boolean contains(T value) {
 		Iterator<T> iter = iterator();
-		while(iter.hasNext()){
-			if(value == null && iter.next() == null) return true;
-			if(value.equals(iter.next())) return true;
+		while (iter.hasNext()) {
+			if (value == null && iter.next() == null)
+				return true;
+			if (value.equals(iter.next()))
+				return true;
 		}
 		return false;
 	}
 
 	@Override
 	public Queryable<T> intersect(Queryable<T> other) {
-		if(other == this) return this;
+		if (other == this)
+			return this;
 		return where(v -> other.contains(v));
 	}
-	
+
 	@Override
-	public void all(Consumer<? super T> consumer){
+	public void all(Consumer<? super T> consumer) {
 		Iterator<T> iter = iterator();
-		while(iter.hasNext()){
+		while (iter.hasNext()) {
 			consumer.accept(iter.next());
 		}
 	}
@@ -166,6 +169,67 @@ class LazyQueryable<T> implements Queryable<T> {
 	@Override
 	public Queryable<T> filter(Function<? super T, Boolean> func) {
 		return where(v -> !func.perform(v));
+	}
+
+	@Override
+	public Queryable<T> combine(final Queryable<T> other) {
+		return new LazyQueryable<T>(new Iterable<T>() {
+
+			@Override
+			public Iterator<T> iterator() {
+				return new CombinedIterator<>(LazyQueryable.this.iterator(), other.iterator());
+			}
+
+		});
+	}
+
+	@Override
+	public T get(int index) {
+		int i = 0;
+		Iterator<T> iterator = iterator();
+		T current = null;
+		while (iterator.hasNext()) {
+			current = iterator.next();
+			if (i == index)
+				return current;
+			i++;
+		}
+		throw new NoSuchElementException();
+	}
+
+	@Override
+	public Queryable<T> get(int index, Consumer<? super T> consumer) {
+		T element = get(index);
+		consumer.accept(element);
+		return this;
+	}
+
+	@Override
+	public <R extends Comparable<? super R>> Queryable<T> orderBy(Function<? super T, R> func) {
+		SortedSet<T> result = new TreeSet<>(new Comparator<T>() {
+
+			@Override
+			public int compare(T o1, T o2) {
+				return func.perform(o1).compareTo(func.perform(o2));
+			}
+
+		});
+		all(e -> result.add(e));
+		return new LazyQueryable<T>(result);
+	}
+
+	@Override
+	public <R extends Comparable<? super R>> Queryable<T> orderInverse(Function<? super T, R> func) {
+		SortedSet<T> result = new TreeSet<>(new Comparator<T>() {
+
+			@Override
+			public int compare(T o1, T o2) {
+				return -1 * func.perform(o1).compareTo(func.perform(o2));
+			}
+
+		});
+		all(e -> result.add(e));
+		return new LazyQueryable<T>(result);
 	}
 
 }

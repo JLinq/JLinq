@@ -6,17 +6,21 @@ import java.util.ListIterator;
 
 /**
  * Wraps a given list.
+ * 
  * @author Marcel Singer
  *
- * @param <T> The type of the elements in this list.
+ * @param <T>
+ *            The type of the elements in this list.
  */
 public class QListWrapper<T> extends LazyQueryable<T> implements QList<T> {
 
 	private final List<T> base;
-	
+
 	/**
 	 * Creates a new instance of {@link QListWrapper}.
-	 * @param base The list to wrap.
+	 * 
+	 * @param base
+	 *            The list to wrap.
 	 */
 	public QListWrapper(List<T> base) {
 		super(base);
@@ -132,6 +136,11 @@ public class QListWrapper<T> extends LazyQueryable<T> implements QList<T> {
 	public List<T> subList(int fromIndex, int toIndex) {
 		return base.subList(fromIndex, toIndex);
 	}
-	
+
+	@Override
+	public QList<T> addElement(T element) {
+		add(element);
+		return this;
+	}
 
 }

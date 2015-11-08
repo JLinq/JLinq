@@ -20,4 +20,6 @@ public class QArrayList<T> extends QListWrapper<T> {
 		for(T v : values)add(v);
 	}
 	
+	
+	
 }
