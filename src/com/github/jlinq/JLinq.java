@@ -29,4 +29,36 @@ public class  JLinq {
 		return new LazyQueryable<>(elements);
 	}
 	
+	/**
+	 * Performs an operation on a given object and returns the result.
+	 * @param object The object to process.
+	 * @param selector The function that performs the operation.
+	 * @param defaltValue The value that is returned if the given function throws an exception.
+	 * @return The value returned by the given function or the specified default value.
+	 */
+	public static <T, V> V get(T object, CriticalFunction<T, V> selector, V defaltValue){
+		if(object == null) return defaltValue;
+		try{
+			V result = selector.perform(object);
+			return result;
+		}catch(Throwable th){
+			return defaltValue;
+		}
+	}
+	
+	/**
+	 * Performs an operation on a given object and returns the result or the default value if the function returns {@code null} or fails with an exception.
+	 * @param object The object to process.
+	 * @param selector The function that performs the operation.
+	 * @param defaultValue The value that is returned if the given function throws an exception or returns {@code null}.
+	 * @return The value returned by the given function or the specified default value.
+	 */
+	public static <T, V> V getNotNull(T object, CriticalFunction<T,V> selector, V defaultValue){
+		V result = get(object, selector, defaultValue);
+		if(result == null) result = defaultValue;
+		return result;
+	}
+	
+	
+	
 }
