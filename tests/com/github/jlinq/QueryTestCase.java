@@ -94,5 +94,18 @@ public class QueryTestCase {
 		someList.add(11);
 		assertEquals(5, result.count());
 	}
+	
+	@Test
+	public void testAny(){
+		QList<Integer> someList = new QArrayList<>(0,1,2,3,4,5,6,7,8,9,10);
+		assertTrue(someList.any(e -> e > 5));
+	}
+	
+	@Test
+	public void testAll(){
+		QList<Integer> someList = new QArrayList<>(6,7,8,9,10);
+		assertTrue(someList.all(e -> e > 5));
+	}
+	
 
 }

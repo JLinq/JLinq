@@ -159,7 +159,7 @@ class LazyQueryable<T> implements Queryable<T> {
 	}
 
 	@Override
-	public void all(Consumer<? super T> consumer) {
+	public void forEach(Consumer<? super T> consumer) {
 		Iterator<T> iter = iterator();
 		while (iter.hasNext()) {
 			consumer.accept(iter.next());
@@ -214,7 +214,7 @@ class LazyQueryable<T> implements Queryable<T> {
 			}
 
 		});
-		all(e -> result.add(e));
+		forEach(e -> result.add(e));
 		return new LazyQueryable<T>(result);
 	}
 
@@ -228,8 +228,30 @@ class LazyQueryable<T> implements Queryable<T> {
 			}
 
 		});
-		all(e -> result.add(e));
+		forEach(e -> result.add(e));
 		return new LazyQueryable<T>(result);
+	}
+
+	@Override
+	public boolean all(Function<? super T, Boolean> condition) {
+		Iterator<T> it = iterator();
+		T element;
+		while(it.hasNext()){
+			element = it.next();
+			if(!condition.perform(element)) return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean any(Function<? super T, Boolean> condition) {
+		Iterator<T> it = iterator();
+		T element;
+		while(it.hasNext()){
+			element = it.next();
+			if(condition.perform(element)) return true;
+		}
+		return false;
 	}
 
 }

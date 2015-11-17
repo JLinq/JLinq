@@ -218,7 +218,7 @@ public interface Queryable<T> extends Iterable<T> {
 	 *            The consumer that should be called for all elements of this
 	 *            query.
 	 */
-	void all(Consumer<? super T> cosumer);
+	void forEach(Consumer<? super T> cosumer);
 
 	/**
 	 * Removes all instances of {@code null} from this query.
@@ -228,5 +228,19 @@ public interface Queryable<T> extends Iterable<T> {
 	default Queryable<T> notNull() {
 		return filter(v -> v == null);
 	}
+	
+	/**
+	 * Returns {@code true} if every element satisfies the given condition.
+	 * @param condition The condition to apply.
+	 * @return {@code true} if every element satisfies the given condition. 
+	 */
+	boolean all(Function<? super T, Boolean> condition);
 
+	/**
+	 * Returns {@code true} if at least one element satisfies the given condition.
+	 * @param condition The condition to apply.
+	 * @return {@code true} if at least one element satisfies the given condition.
+	 */
+	boolean any(Function<? super T, Boolean> condition);
+	
 }
