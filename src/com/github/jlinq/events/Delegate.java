@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class Delegate<S, P> {
 
-	private Set<Event<S, P>> events = new HashSet<>();
+	private Set<Event<S, P>> events = new HashSet<Event<S, P>>();
 
 	public Delegate() {
 

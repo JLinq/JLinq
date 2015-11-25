@@ -18,6 +18,11 @@ class ConstantReferenceExpression extends CompiledElement implements ConstantExp
 		
 	}
 
+	@Override
+	public String getDeclaration() {
+		return getReference();
+	}
+
 	
 
 }

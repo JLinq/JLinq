@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class QArrayList<T> extends QListWrapper<T> {
 
 	public QArrayList() {
-		super(new ArrayList<>());
+		super(new ArrayList<T>());
 	}
 
 	@SafeVarargs

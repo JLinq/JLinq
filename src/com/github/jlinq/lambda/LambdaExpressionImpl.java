@@ -87,4 +87,9 @@ public class LambdaExpressionImpl extends CompiledElement implements LambdaExpre
 
 	}
 
+	@Override
+	public String getDeclaration() {
+		return getReference();
+	}
+
 }

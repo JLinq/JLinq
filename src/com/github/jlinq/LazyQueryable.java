@@ -28,9 +28,8 @@ class LazyQueryable<T> implements Queryable<T> {
 		return base.iterator();
 	}
 
-	@Override
-	public <R> Queryable<R> select(Function<? super T, R> func) {
-		Conversion<T, R> conversion = new Conversion<T, R>() {
+	public <R> Queryable<R> select(final Function<? super T, R> func) {
+		final Conversion<T, R> conversion = new Conversion<T, R>() {
 
 			@Override
 			public R perform(T value) {
@@ -43,13 +42,18 @@ class LazyQueryable<T> implements Queryable<T> {
 			}
 		};
 		return new LazyQueryable<R>(
-				new LazyQueryableIterable<>(() -> new LazyIterator<T, R>(base.iterator(), conversion)));
+				new LazyQueryableIterable<R>(new Creator<Iterator<R>>() {
+					@Override
+					public Iterator<R> create() {
+						return new LazyIterator<T, R>(base.iterator(), conversion);
+					}
+				}));
 
 	}
 
 	@Override
-	public Queryable<T> where(Function<? super T, Boolean> func) {
-		Conversion<T, T> conversion = new Conversion<T, T>() {
+	public Queryable<T> where(final Function<? super T, Boolean> func) {
+		final Conversion<T, T> conversion = new Conversion<T, T>() {
 
 			@Override
 			public T perform(T value) {
@@ -63,12 +67,17 @@ class LazyQueryable<T> implements Queryable<T> {
 
 		};
 		return new LazyQueryable<T>(
-				new LazyQueryableIterable<>(() -> new LazyIterator<T, T>(base.iterator(), conversion)));
+				new LazyQueryableIterable<T>(new Creator<Iterator<T>>() {
+					@Override
+					public Iterator<T> create() {
+						return new LazyIterator<T, T>(base.iterator(), conversion);
+					}
+				}));
 	}
 
 	@Override
 	public QList<T> toList() {
-		QList<T> result = new QArrayList<>();
+		QList<T> result = new QArrayList<T>();
 		Iterator<T> iter = iterator();
 		while (iter.hasNext()) {
 			result.add(iter.next());
@@ -121,15 +130,21 @@ class LazyQueryable<T> implements Queryable<T> {
 	}
 
 	@Override
-	public <R> Map<R, Queryable<T>> group(Function<? super T, R> func) {
-		TreeSet<R> keys = new TreeSet<>();
+	public <R> Map<R, Queryable<T>> group(final Function<? super T, R> func) {
+		TreeSet<R> keys = new TreeSet<R>();
 		Iterator<T> iter = iterator();
 		while (iter.hasNext()) {
 			keys.add(func.perform(iter.next()));
 		}
-		Map<R, Queryable<T>> result = new HashMap<>();
+		Map<R, Queryable<T>> result = new HashMap<R, Queryable<T>>();
 		for (R key : keys) {
-			result.put(key, where(a -> func.perform(a).equals(key)));
+			final R keyT = key;
+			result.put(key, where(new Function<T, Boolean>() {
+				@Override
+				public Boolean perform(T a) {
+					return func.perform(a).equals(keyT);
+				}
+			}));
 		}
 		return result;
 	}
@@ -152,10 +167,15 @@ class LazyQueryable<T> implements Queryable<T> {
 	}
 
 	@Override
-	public Queryable<T> intersect(Queryable<T> other) {
+	public Queryable<T> intersect(final Queryable<T> other) {
 		if (other == this)
 			return this;
-		return where(v -> other.contains(v));
+		return where(new Function<T, Boolean>() {
+			@Override
+			public Boolean perform(T v) {
+				return other.contains(v);
+			}
+		});
 	}
 
 	@Override
@@ -167,8 +187,13 @@ class LazyQueryable<T> implements Queryable<T> {
 	}
 
 	@Override
-	public Queryable<T> filter(Function<? super T, Boolean> func) {
-		return where(v -> !func.perform(v));
+	public Queryable<T> filter(final Function<? super T, Boolean> func) {
+		return where(new Function<T, Boolean>() {
+			@Override
+			public Boolean perform(T v) {
+				return !func.perform(v);
+			}
+		});
 	}
 
 	@Override
@@ -177,7 +202,7 @@ class LazyQueryable<T> implements Queryable<T> {
 
 			@Override
 			public Iterator<T> iterator() {
-				return new CombinedIterator<>(LazyQueryable.this.iterator(), other.iterator());
+				return new CombinedIterator<T>(LazyQueryable.this.iterator(), other.iterator());
 			}
 
 		});
@@ -205,8 +230,8 @@ class LazyQueryable<T> implements Queryable<T> {
 	}
 
 	@Override
-	public <R extends Comparable<? super R>> Queryable<T> orderBy(Function<? super T, R> func) {
-		SortedSet<T> result = new TreeSet<>(new Comparator<T>() {
+	public <R extends Comparable<? super R>> Queryable<T> orderBy(final Function<? super T, R> func) {
+		final SortedSet<T> result = new TreeSet<T>(new Comparator<T>() {
 
 			@Override
 			public int compare(T o1, T o2) {
@@ -214,13 +239,18 @@ class LazyQueryable<T> implements Queryable<T> {
 			}
 
 		});
-		forEach(e -> result.add(e));
+		forEach(new Consumer<T>() {
+			@Override
+			public void accept(T e) {
+				result.add(e);
+			}
+		});
 		return new LazyQueryable<T>(result);
 	}
 
 	@Override
-	public <R extends Comparable<? super R>> Queryable<T> orderInverse(Function<? super T, R> func) {
-		SortedSet<T> result = new TreeSet<>(new Comparator<T>() {
+	public <R extends Comparable<? super R>> Queryable<T> orderInverse(final Function<? super T, R> func) {
+		final SortedSet<T> result = new TreeSet<T>(new Comparator<T>() {
 
 			@Override
 			public int compare(T o1, T o2) {
@@ -228,7 +258,12 @@ class LazyQueryable<T> implements Queryable<T> {
 			}
 
 		});
-		forEach(e -> result.add(e));
+		forEach(new Consumer<T>() {
+			@Override
+			public void accept(T e) {
+				result.add(e);
+			}
+		});
 		return new LazyQueryable<T>(result);
 	}
 
@@ -252,6 +287,12 @@ class LazyQueryable<T> implements Queryable<T> {
 			if(condition.perform(element)) return true;
 		}
 		return false;
+	}
+
+	@Override
+	public Queryable<T> notNull() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

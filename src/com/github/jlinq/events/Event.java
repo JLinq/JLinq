@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class Event<S, P> {
 
-	private Set<EventDelegate<? super S, ? super P>> listeners = new HashSet<>();
+	private Set<EventDelegate<? super S, ? super P>> listeners = new HashSet<EventDelegate<? super S, ? super P>>();
 
 	@SafeVarargs
 	public Event(Delegate<S, P>... sources) {
@@ -28,21 +28,21 @@ public class Event<S, P> {
 	
 	public EventDelegate<S, P> registerParameter(ParameterDelegate<? super P> listener){
 		if(listener == null) return null;
-		ParameterDelegateWrapper<S,P> wrapper = new ParameterDelegateWrapper<>(listener);
+		ParameterDelegateWrapper<S,P> wrapper = new ParameterDelegateWrapper<S, P>(listener);
 		register(wrapper);
 		return wrapper;
 	}
 	
 	public EventDelegate<S, P> registerSender(SenderDelegate<? super S> listener){
 		if(listener == null) return null;
-		SenderDelegateWrapper<S, P> wrapper = new SenderDelegateWrapper<>(listener);
+		SenderDelegateWrapper<S, P> wrapper = new SenderDelegateWrapper<S, P>(listener);
 		register(wrapper);
 		return wrapper;
 	}
 	
 	public EventDelegate<S, P> register(RaisedDelegate listener){
 		if(listener == null) return null;
-		RaisedDelegateWrapper<S, P> wrapper = new RaisedDelegateWrapper<>(listener);
+		RaisedDelegateWrapper<S, P> wrapper = new RaisedDelegateWrapper<S, P>(listener);
 		register(wrapper);
 		return wrapper;
 	}

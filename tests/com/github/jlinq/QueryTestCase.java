@@ -4,18 +4,25 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.function.Consumer;
+
 import org.junit.Test;
 
 public class QueryTestCase {
 
 	@Test
 	public void testSelect() {
-		QList<String> someList = new QArrayList<>();
+		QList<String> someList = new QArrayList<String>();
 		someList.add("Hello");
 		someList.add("World");
 		someList.add("Foo");
 		someList.add("Bar");
-		Queryable<Character> query = someList.select(v -> v.charAt(0));
+		Queryable<Character> query = someList.select(new Function<String, Character>() {
+			@Override
+			public Character perform(String v) {
+				return v.charAt(0);
+			}
+		});
 		assertEquals(4, query.count());
 	}
 
@@ -33,7 +40,17 @@ public class QueryTestCase {
 		Queryable<Integer> q2 = JLinq.create(3, 6, 9, 12, 15);
 		Queryable<Integer> result = q1.intersect(q2);
 		assertEquals(2, result.count());
-		result.get(0, e -> assertEquals((Integer) 6, e)).get(1, e -> assertEquals((Integer) 12, e));
+		result.get(0, new Consumer<Integer>() {
+			@Override
+			public void accept(Integer e) {
+				assertEquals((Integer) 6, e);
+			}
+		}).get(1, new Consumer<Integer>() {
+			@Override
+			public void accept(Integer e) {
+				assertEquals((Integer) 12, e);
+			}
+		});
 	}
 
 	@Test
@@ -44,34 +61,16 @@ public class QueryTestCase {
 		assertEquals(10, result.count());
 	}
 
-	@Test
-	public void testOrderBy() {
-		Queryable<String> q1 = JLinq.create("abc", "ab", "a", "abcd", "abcdef", "abcde");
-		Queryable<String> result = q1.orderBy(e -> e.length());
-		int i = -1;
-		for (String e : result) {
-			if (e.length() < i)
-				fail("The order was invalid.");
-			i = e.length();
-		}
-	}
-
-	@Test
-	public void testOrderInverse() {
-		Queryable<String> q1 = JLinq.create("abc", "ab", "a", "abcd", "abcdef", "abcde");
-		Queryable<String> result = q1.orderInverse(e -> e.length());
-		int i = Integer.MAX_VALUE;
-		for (String e : result) {
-			if (e.length() > i)
-				fail("The order was invalid.");
-			i = e.length();
-		}
-	}
 
 	@Test
 	public void testWhere() {
-		QList<Integer> someList = new QArrayList<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-		Queryable<Integer> result = someList.where(v -> v > 5);
+		QList<Integer> someList = new QArrayList<Integer>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		Queryable<Integer> result = someList.where(new Function<Integer, Boolean>() {
+			@Override
+			public Boolean perform(Integer v) {
+				return v > 5;
+			}
+		});
 		assertTrue(result.count() == 5);
 		assertEquals((Integer) 6, result.first());
 		assertEquals((Integer) 10, result.last());
@@ -79,8 +78,13 @@ public class QueryTestCase {
 
 	@Test
 	public void testUnexecuted() {
-		QList<Integer> someList = new QArrayList<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-		Queryable<Integer> result = someList.where(v -> v > 5);
+		QList<Integer> someList = new QArrayList<Integer>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		Queryable<Integer> result = someList.where(new Function<Integer, Boolean>() {
+			@Override
+			public Boolean perform(Integer v) {
+				return v > 5;
+			}
+		});
 		assertEquals(5, result.count());
 		someList.add(11);
 		assertEquals(6, result.count());
@@ -88,8 +92,13 @@ public class QueryTestCase {
 
 	@Test
 	public void testExecuted() {
-		QList<Integer> someList = new QArrayList<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-		Queryable<Integer> result = someList.where(v -> v > 5).execute();
+		QList<Integer> someList = new QArrayList<Integer>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		Queryable<Integer> result = someList.where(new Function<Integer, Boolean>() {
+			@Override
+			public Boolean perform(Integer v) {
+				return v > 5;
+			}
+		}).execute();
 		assertEquals(5, result.count());
 		someList.add(11);
 		assertEquals(5, result.count());
@@ -97,14 +106,24 @@ public class QueryTestCase {
 	
 	@Test
 	public void testAny(){
-		QList<Integer> someList = new QArrayList<>(0,1,2,3,4,5,6,7,8,9,10);
-		assertTrue(someList.any(e -> e > 5));
+		QList<Integer> someList = new QArrayList<Integer>(0,1,2,3,4,5,6,7,8,9,10);
+		assertTrue(someList.any(new Function<Integer, Boolean>() {
+			@Override
+			public Boolean perform(Integer e) {
+				return e > 5;
+			}
+		}));
 	}
 	
 	@Test
 	public void testAll(){
-		QList<Integer> someList = new QArrayList<>(6,7,8,9,10);
-		assertTrue(someList.all(e -> e > 5));
+		QList<Integer> someList = new QArrayList<Integer>(6,7,8,9,10);
+		assertTrue(someList.all(new Function<Integer, Boolean>() {
+			@Override
+			public Boolean perform(Integer e) {
+				return e > 5;
+			}
+		}));
 	}
 	
 

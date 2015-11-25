@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ExpressionsImpl<T extends Expression> extends CompiledElement implements Expressions<T> {
 
-	private final List<T> expressions = new ArrayList<>();
+	private final List<T> expressions = new ArrayList<T>();
 	
 	
 	public ExpressionsImpl(T[] expressions) {
@@ -67,6 +67,11 @@ public class ExpressionsImpl<T extends Expression> extends CompiledElement imple
 			}else sb.append(current);
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public String getDeclaration() {
+		return getReference();
 	}
 	
 

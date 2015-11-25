@@ -49,4 +49,9 @@ class AssigmentExpressionImpl extends CompiledElement implements AssigmentExpres
 			}
 		}
 	}
+
+	@Override
+	public String getDeclaration() {
+		return getReference();
+	}
 }

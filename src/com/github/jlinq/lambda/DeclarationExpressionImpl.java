@@ -38,4 +38,9 @@ class DeclarationExpressionImpl extends CompiledElement implements DeclarationEx
 		return String.format("%s %s", type.getName(), getReference());
 	}
 
+	@Override
+	public String getDeclaration() {
+		return getReference();
+	}
+
 }

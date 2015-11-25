@@ -46,7 +46,13 @@ public class JObject<T> {
 	}
 	
 	public JObject<T> copy(JObject<T> target){
-		target.access(v -> object);
+		target.access(new Function<T, T>() {
+
+			@Override
+			public T perform(T value) {
+				return object;
+			}
+		});
 		return this;
 	}
 	

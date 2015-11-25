@@ -17,7 +17,7 @@ public class  JLinq {
 	 * @return An implementation of {@link Queryable} that wraps the given {@link Iterable}.
 	 */
 	public static <T> Queryable<T> create(Iterable<T> iterable){
-		return new LazyQueryable<>(iterable);
+		return new LazyQueryable<T>(iterable);
 	}
 	/**
 	 * Creates an implementation of {@link Queryable} by inserting the given elements into a list.
@@ -26,7 +26,7 @@ public class  JLinq {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Queryable<T> create(T... elements){
-		return new LazyQueryable<>(elements);
+		return new LazyQueryable<T>(elements);
 	}
 	
 	/**

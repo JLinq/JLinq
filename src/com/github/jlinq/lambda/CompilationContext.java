@@ -7,7 +7,7 @@ import com.github.jlinq.QListWrapper;
 
 class CompilationContext {
 	
-	private QList<String> localVariables = new QListWrapper<>(new ArrayList<>());
+	private QList<String> localVariables = new QListWrapper<String>(new ArrayList<String>());
 
 	public CompilationContext() {
 		

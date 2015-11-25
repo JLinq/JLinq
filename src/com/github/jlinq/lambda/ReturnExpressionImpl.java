@@ -24,6 +24,11 @@ class ReturnExpressionImpl extends CompiledElement implements ReturnExpression {
 		if(exp instanceof CompilationElement) return String.format("return %s", ((CompilationElement) exp).getReference());
 		return String.format("return %s", exp);
 	}
+
+	@Override
+	public String getDeclaration() {
+		return getReference();
+	}
 	
 	
 

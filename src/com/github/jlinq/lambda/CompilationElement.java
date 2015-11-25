@@ -5,8 +5,10 @@ interface CompilationElement {
 	void initCompilation(CompilationContext context);
 
 	String getReference();
-	default String getDeclaration(){
+	String getDeclaration();
+	
+	/*{
 		return getReference();
-	}
+	}*/
 	
 }

@@ -9,11 +9,14 @@ import com.github.jlinq.events.Delegate;
 import com.github.jlinq.events.Event;
 import com.github.jlinq.events.EventArgs;
 import com.github.jlinq.events.EventDelegate;
+import com.github.jlinq.events.ParameterDelegate;
+import com.github.jlinq.events.RaisedDelegate;
+import com.github.jlinq.events.SenderDelegate;
 
 public class EventTestCase {
 
-	private Delegate<EventTestCase, EventArgs> testStartedDelegate = new Delegate<>();
-	public final Event<EventTestCase, EventArgs> TestStarted = new Event<>(testStartedDelegate);
+	private Delegate<EventTestCase, EventArgs> testStartedDelegate = new Delegate<EventTestCase, EventArgs>();
+	public final Event<EventTestCase, EventArgs> TestStarted = new Event<EventTestCase, EventArgs>(testStartedDelegate);
 	
 	
 	private boolean fullRaised = false;
@@ -31,7 +34,12 @@ public class EventTestCase {
 		assertFalse(parameterRaised);
 		assertFalse(senderRaised);
 		assertFalse(emptyRaised);
-		TestStarted.register((s, a) -> fullRaised = true);
+		TestStarted.register(new EventDelegate<EventTestCase, EventArgs>() {
+			@Override
+			public void raised(EventTestCase s, EventArgs a) {
+				fullRaised = true;
+			}
+		});
 		TestStarted.register(new EventDelegate<EventTestCase, EventArgs>() {
 
 			@Override
@@ -40,9 +48,24 @@ public class EventTestCase {
 				assertNotNull(parameter);
 			}
 		});
-		TestStarted.register(() -> emptyRaised = true);
-		TestStarted.registerParameter(p -> parameterRaised = true);
-		TestStarted.registerSender(s -> senderRaised = true);
+		TestStarted.register(new RaisedDelegate() {
+			@Override
+			public void raised() {
+				emptyRaised = true;
+			}
+		});
+		TestStarted.registerParameter(new ParameterDelegate<EventArgs>() {
+			@Override
+			public void raised(EventArgs p) {
+				parameterRaised = true;
+			}
+		});
+		TestStarted.registerSender(new SenderDelegate<EventTestCase>() {
+			@Override
+			public void raised(EventTestCase s) {
+				senderRaised = true;
+			}
+		});
 		testStartedDelegate.raise(this, new EventArgs());
 		
 		assertTrue(fullRaised);

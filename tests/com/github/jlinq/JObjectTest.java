@@ -2,6 +2,8 @@ package com.github.jlinq;
 
 import static org.junit.Assert.*;
 
+import java.util.function.Consumer;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,21 +13,61 @@ public class JObjectTest {
 	
 	@Test
 	public void testSimple() {
-		JObject<Integer> i = new JObject<>(0);
-		i.access(v -> v + 1);
+		JObject<Integer> i = new JObject<Integer>(0);
+		i.access(new Function<Integer, Integer>() {
+			@Override
+			public Integer perform(Integer v) {
+				return v + 1;
+			}
+		});
 		assertEquals((Integer) 1, i.get());
 		executed = false;
-		i.conditional(v -> v > 0, v -> executed = true);
+		i.conditional(new Function<Integer, Boolean>() {
+			@Override
+			public Boolean perform(Integer v) {
+				return v > 0;
+			}
+		}, new Consumer<Integer>() {
+			@Override
+			public void accept(Integer v) {
+				executed = true;
+			}
+		});
 		assertTrue(executed);
 	}
 	
 	@Test
 	public void testConditional(){
-		JObject<Integer> i = new JObject<>(1);
+		JObject<Integer> i = new JObject<Integer>(1);
 		executed = false;
-		i.conditional(v -> v > 0, v -> executed = true);
+		i.conditional(new Function<Integer, Boolean>() {
+			@Override
+			public Boolean perform(Integer v) {
+				return v > 0;
+			}
+		}, new Consumer<Integer>() {
+			@Override
+			public void accept(Integer v) {
+				executed = true;
+			}
+		});
 		assertTrue(executed);
-		i.conditional(v -> v == 0, v -> executed = true, v -> executed = false);
+		i.conditional(new Function<Integer, Boolean>() {
+			@Override
+			public Boolean perform(Integer v) {
+				return v == 0;
+			}
+		}, new Consumer<Integer>() {
+			@Override
+			public void accept(Integer v) {
+				executed = true;
+			}
+		}, new Consumer<Integer>() {
+			@Override
+			public void accept(Integer v) {
+				executed = false;
+			}
+		});
 		assertFalse(executed);
 	}
 	

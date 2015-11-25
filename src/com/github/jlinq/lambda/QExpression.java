@@ -26,7 +26,7 @@ public  class QExpression {
 	}
 
 	public static Expressions<ParameterExpression> parameterExpressions(ParameterExpression... values) {
-		return new ExpressionsImpl<>(values);
+		return new ExpressionsImpl<ParameterExpression>(values);
 	}
 
 	public static CallExpression call(Expression target, Method m, Expressions<Expression> parameters) {

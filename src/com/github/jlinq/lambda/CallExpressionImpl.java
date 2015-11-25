@@ -47,4 +47,11 @@ class CallExpressionImpl extends CompiledElement implements CallExpression {
 			((CompilationElement) parameters).initCompilation(context);
 	}
 
+
+
+	@Override
+	public String getDeclaration() {
+		return getReference();
+	}
+
 }

@@ -225,10 +225,7 @@ public interface Queryable<T> extends Iterable<T> {
 	 * 
 	 * @return A query without {@code null} elements.
 	 */
-	default Queryable<T> notNull() {
-		return filter(v -> v == null);
-	}
-	
+     Queryable<T> notNull();
 	/**
 	 * Returns {@code true} if every element satisfies the given condition.
 	 * @param condition The condition to apply.
