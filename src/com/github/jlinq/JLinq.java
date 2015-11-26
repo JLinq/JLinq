@@ -24,7 +24,6 @@ public class  JLinq {
 	 * @param elements The elements to be included.
 	 * @return An implementation of {@link Queryable} that contains the given elements.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> Queryable<T> create(T... elements){
 		return new LazyQueryable<T>(elements);
 	}

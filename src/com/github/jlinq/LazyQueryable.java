@@ -291,8 +291,12 @@ class LazyQueryable<T> implements Queryable<T> {
 
 	@Override
 	public Queryable<T> notNull() {
-		// TODO Auto-generated method stub
-		return null;
+		return filter(new Function<T, Boolean>() {
+			@Override
+			public Boolean perform(T e) {
+				return e == null;
+			}
+		});
 	}
 
 }
