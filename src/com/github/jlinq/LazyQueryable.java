@@ -207,6 +207,30 @@ class LazyQueryable<T> implements Queryable<T> {
 
 		});
 	}
+	
+	@Override
+	public Queryable<T> filterDuplicates() {
+		return new LazyQueryable<T>(new Iterable<T>(){
+
+			@Override
+			public Iterator<T> iterator() {
+				return new UnionIterator<T>(LazyQueryable.this.iterator());
+			}
+			
+		});
+	}
+
+	@Override
+	public Queryable<T> filterDuplicates(final Function<? super T, ?> unifier) {
+		return new LazyQueryable<T>(new Iterable<T>(){
+
+			@Override
+			public Iterator<T> iterator() {
+				return new UnionIterator<T>(LazyQueryable.this.iterator(), unifier);
+			}
+			
+		});
+	}
 
 	@Override
 	public T get(int index) {
@@ -298,5 +322,17 @@ class LazyQueryable<T> implements Queryable<T> {
 			}
 		});
 	}
+
+	@Override
+	public Queryable<T> union(Queryable<T> other) {
+		return combine(other).filterDuplicates();
+	}
+
+	@Override
+	public Queryable<T> union(Queryable<T> other, Function<? super T, ?> unifier) {
+		return combine(other).filterDuplicates(unifier);
+	}
+
+	
 
 }

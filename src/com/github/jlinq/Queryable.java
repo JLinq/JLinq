@@ -54,7 +54,7 @@ public interface Queryable<T> extends Iterable<T> {
 
 	/**
 	 * Removes every element that fulfills the given condition. This is the
-	 * inverse of {@link Queryable#select(Function)}.
+	 * inverse of {@link Queryable#where(Function)}.
 	 * 
 	 * @param func
 	 *            The function that tests if an element fulfills a condition.
@@ -183,11 +183,39 @@ public interface Queryable<T> extends Iterable<T> {
 	 * {@link Queryable}.
 	 * 
 	 * @param other
-	 *            The orher query.
+	 *            The other query.
 	 * @return A query containing the elements of this and the given query.
 	 */
 	Queryable<T> combine(Queryable<T> other);
 
+	/**
+	 * Filters all duplicate elements of this queryable.
+	 * @return A queryable that doesn't contain duplicate elements.
+	 */
+	Queryable<T> filterDuplicates();
+	
+	/**
+	 * Filters all duplicate elements of this queryable.
+	 * @param unifier A function that is used to determine the criteria that should be used to find duplicates.
+	 * @return A queryable that doesn't contain duplicate elements.
+	 */
+	Queryable<T> filterDuplicates(Function<? super T, ?> unifier);
+	
+	/**
+	 * Unites this and the given queryable.
+	 * @param other The other queryable.
+	 * @return A queryable that contains all elements of this and the given queryable exactly one time.
+	 */
+	Queryable<T> union(Queryable<T> other);
+	
+	/**
+	 * Unites this and the given queryable.
+	 * @param other The other queryable.
+	 * @param unifier A function that is used to determine the criteria that should be used to find duplicates.
+	 * @return A queryable that contains all elements of this and the given queryable exactly one time.
+	 */
+	Queryable<T> union(Queryable<T> other, Function<? super T, ?> unifier);
+	
 	/**
 	 * Returns the element at the given index.
 	 * 
