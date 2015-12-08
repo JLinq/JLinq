@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.jlinq</groupId>
 	<artifactId>jlinq</artifactId>
-	<version>0.0.3a</version>
+	<version>0.0.4</version>
 	<name>JLinq</name>
 	<licenses>
 		<license>
@@ -37,6 +37,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
 				<configuration>
 					<excludes>
 						<exclude>**/log4j.properties</exclude>
@@ -47,6 +48,18 @@
 							<mainClass>com.mkyong.core.utils.App</mainClass>
 						</manifest>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>animal-sniffer-maven-plugin</artifactId>
+				<version>1.14</version>
+				<configuration>
+					<signature>
+						<groupId>org.codehaus.mojo.signature</groupId>
+						<artifactId>java16</artifactId>
+						<version>1.0</version>
+					</signature>
 				</configuration>
 			</plugin>
 		</plugins>

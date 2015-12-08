@@ -1,16 +1,15 @@
 package com.github.jlinq;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.util.function.Consumer;
-
-import org.junit.Before;
 import org.junit.Test;
 
 public class JObjectTest {
 
 	private boolean executed = false;
-	
+
 	@Test
 	public void testSimple() {
 		JObject<Integer> i = new JObject<Integer>(0);
@@ -27,7 +26,7 @@ public class JObjectTest {
 			public Boolean perform(Integer v) {
 				return v > 0;
 			}
-		}, new Consumer<Integer>() {
+		}, new ParameterizedCallback<Integer>() {
 			@Override
 			public void accept(Integer v) {
 				executed = true;
@@ -35,9 +34,9 @@ public class JObjectTest {
 		});
 		assertTrue(executed);
 	}
-	
+
 	@Test
-	public void testConditional(){
+	public void testConditional() {
 		JObject<Integer> i = new JObject<Integer>(1);
 		executed = false;
 		i.conditional(new Function<Integer, Boolean>() {
@@ -45,7 +44,7 @@ public class JObjectTest {
 			public Boolean perform(Integer v) {
 				return v > 0;
 			}
-		}, new Consumer<Integer>() {
+		}, new ParameterizedCallback<Integer>() {
 			@Override
 			public void accept(Integer v) {
 				executed = true;
@@ -57,12 +56,12 @@ public class JObjectTest {
 			public Boolean perform(Integer v) {
 				return v == 0;
 			}
-		}, new Consumer<Integer>() {
+		}, new ParameterizedCallback<Integer>() {
 			@Override
 			public void accept(Integer v) {
 				executed = true;
 			}
-		}, new Consumer<Integer>() {
+		}, new ParameterizedCallback<Integer>() {
 			@Override
 			public void accept(Integer v) {
 				executed = false;
@@ -70,7 +69,5 @@ public class JObjectTest {
 		});
 		assertFalse(executed);
 	}
-	
-	
 
 }

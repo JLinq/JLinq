@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.function.Consumer;
 
 class LazyQueryable<T> implements Queryable<T> {
 
@@ -179,7 +178,7 @@ class LazyQueryable<T> implements Queryable<T> {
 	}
 
 	@Override
-	public void forEach(Consumer<? super T> consumer) {
+	public void forEach(ParameterizedCallback<? super T> consumer) {
 		Iterator<T> iter = iterator();
 		while (iter.hasNext()) {
 			consumer.accept(iter.next());
@@ -247,7 +246,7 @@ class LazyQueryable<T> implements Queryable<T> {
 	}
 
 	@Override
-	public Queryable<T> get(int index, Consumer<? super T> consumer) {
+	public Queryable<T> get(int index, ParameterizedCallback<? super T> consumer) {
 		T element = get(index);
 		consumer.accept(element);
 		return this;
@@ -263,7 +262,7 @@ class LazyQueryable<T> implements Queryable<T> {
 			}
 
 		});
-		forEach(new Consumer<T>() {
+		forEach(new ParameterizedCallback<T>() {
 			@Override
 			public void accept(T e) {
 				result.add(e);
@@ -282,7 +281,7 @@ class LazyQueryable<T> implements Queryable<T> {
 			}
 
 		});
-		forEach(new Consumer<T>() {
+		forEach(new ParameterizedCallback<T>() {
 			@Override
 			public void accept(T e) {
 				result.add(e);

@@ -2,7 +2,6 @@ package com.github.jlinq;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.function.Consumer;
 
 public interface Queryable<T> extends Iterable<T> {
 
@@ -237,7 +236,7 @@ public interface Queryable<T> extends Iterable<T> {
 	 *            The consumer to call.
 	 * @return This instance.
 	 */
-	Queryable<T> get(int index, Consumer<? super T> consumer);
+	Queryable<T> get(int index, ParameterizedCallback<? super T> consumer);
 
 	/**
 	 * Iterates over all elements of this query and calls the given consumer.
@@ -246,7 +245,7 @@ public interface Queryable<T> extends Iterable<T> {
 	 *            The consumer that should be called for all elements of this
 	 *            query.
 	 */
-	void forEach(Consumer<? super T> cosumer);
+	void forEach(ParameterizedCallback<? super T> cosumer);
 
 	/**
 	 * Removes all instances of {@code null} from this query.

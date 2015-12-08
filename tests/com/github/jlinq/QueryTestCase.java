@@ -2,9 +2,6 @@ package com.github.jlinq;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.function.Consumer;
 
 import org.junit.Test;
 
@@ -40,12 +37,12 @@ public class QueryTestCase {
 		Queryable<Integer> q2 = JLinq.create(3, 6, 9, 12, 15);
 		Queryable<Integer> result = q1.intersect(q2);
 		assertEquals(2, result.count());
-		result.get(0, new Consumer<Integer>() {
+		result.get(0, new ParameterizedCallback<Integer>() {
 			@Override
 			public void accept(Integer e) {
 				assertEquals((Integer) 6, e);
 			}
-		}).get(1, new Consumer<Integer>() {
+		}).get(1, new ParameterizedCallback<Integer>() {
 			@Override
 			public void accept(Integer e) {
 				assertEquals((Integer) 12, e);
@@ -60,7 +57,6 @@ public class QueryTestCase {
 		Queryable<Integer> result = q1.combine(q2);
 		assertEquals(10, result.count());
 	}
-
 
 	@Test
 	public void testWhere() {
@@ -103,10 +99,10 @@ public class QueryTestCase {
 		someList.add(11);
 		assertEquals(5, result.count());
 	}
-	
+
 	@Test
-	public void testAny(){
-		QList<Integer> someList = new QArrayList<Integer>(0,1,2,3,4,5,6,7,8,9,10);
+	public void testAny() {
+		QList<Integer> someList = new QArrayList<Integer>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		assertTrue(someList.any(new Function<Integer, Boolean>() {
 			@Override
 			public Boolean perform(Integer e) {
@@ -114,10 +110,10 @@ public class QueryTestCase {
 			}
 		}));
 	}
-	
+
 	@Test
-	public void testAll(){
-		QList<Integer> someList = new QArrayList<Integer>(6,7,8,9,10);
+	public void testAll() {
+		QList<Integer> someList = new QArrayList<Integer>(6, 7, 8, 9, 10);
 		assertTrue(someList.all(new Function<Integer, Boolean>() {
 			@Override
 			public Boolean perform(Integer e) {
@@ -125,6 +121,5 @@ public class QueryTestCase {
 			}
 		}));
 	}
-	
 
 }

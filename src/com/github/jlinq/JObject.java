@@ -1,6 +1,5 @@
 package com.github.jlinq;
 
-import java.util.function.Consumer;
 
 public class JObject<T> {
 
@@ -15,7 +14,7 @@ public class JObject<T> {
 	}
 	
 	
-	public void access(Consumer<? super T> consumer){
+	public void access(ParameterizedCallback<? super T> consumer){
 		if(consumer != null) consumer.accept(object);
 	}
 	
@@ -31,7 +30,7 @@ public class JObject<T> {
 		object = value;
 	}
 	
-	public boolean conditional(Function<? super T, Boolean> function, Consumer<? super T> then, Consumer<? super T> alternative){
+	public boolean conditional(Function<? super T, Boolean> function, ParameterizedCallback<? super T> then, ParameterizedCallback<? super T> alternative){
 		if(function.perform(object)){
 			if(then != null) then.accept(object);
 			return true;
@@ -41,7 +40,7 @@ public class JObject<T> {
 		}
 	}
 	
-	public boolean conditional(Function<? super T, Boolean> function, Consumer<? super T> then){
+	public boolean conditional(Function<? super T, Boolean> function, ParameterizedCallback<? super T> then){
 		return conditional(function, then, null);
 	}
 	
