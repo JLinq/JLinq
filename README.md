@@ -1,4 +1,4 @@
-# JLinq [![Build Status](https://travis-ci.org/JLinq/JLinq.svg?branch=master)](https://travis-ci.org/JLinq/JLinq)
+# JLinq [![Build Status](https://travis-ci.org/JLinq/JLinq.svg?branch=master)](https://travis-ci.org/JLinq/JLinq) [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 A basic LINQ-like toolset for java 
 
 ## Getting started
